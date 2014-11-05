@@ -46,17 +46,17 @@ public class ListPicker extends CordovaPlugin {
     // --------------------------------------------------------------------------
     // LOCAL METHODS
     // --------------------------------------------------------------------------
-    
+
     public void showPicker(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
-    
+
         final CordovaInterface cordova = this.cordova;
-        
+
         final JSONObject options = data.getJSONObject(0);
         final String title = options.getString("title");
         final String selectedValue = options.getString("selectedValue");
         final JSONArray items = options.getJSONArray("items");
-        
-                
+
+
         // Get the texts to display
         int index = -1;
         List<String> list = new ArrayList<String>();
@@ -69,15 +69,15 @@ public class ListPicker extends CordovaPlugin {
         }
         final CharSequence[] texts = list.toArray(new CharSequence[list.size()]);
         final int selectedIndex = index;
-        
+
         // Create and show the alert dialog
         Runnable runnable = new Runnable() {
             public void run() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(cordova.getActivity());
-                
+
                 // Set dialog properties
                 builder.setTitle(title);
-                builder.setCancelable(true);
+                builder.setCancelable(false);
                 builder.setSingleChoiceItems(texts, selectedIndex, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int index) {
                         try {
@@ -91,11 +91,11 @@ public class ListPicker extends CordovaPlugin {
                         }
                     }
                 });
-                
+
                 // Show alert dialog
                 AlertDialog alert = builder.create();
                 alert.getWindow().getAttributes().windowAnimations = android.R.style.Animation_Dialog;
-                alert.show(); 
+                alert.show();
             }
         };
         this.cordova.getActivity().runOnUiThread(runnable);
